@@ -1,14 +1,13 @@
 import React from "react";
 import {Image, Linking, StyleSheet, Text, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"
-const tw = <Icon name="twitter" size={30} color="black"/>
-//const twitter = <Icon name=
+const tw = <Icon name="instagram" size={30} color="black"/>
 
 const ProfileCard = () => {
     const user = {
-        avatar: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80",
-        coverPhoto: "https://wallpapers.com/images/hd/profile-picture-background-10tprnkqwqif4lyv.jpg",
-        name: "Danny Toala"
+        avatar: "https://media.licdn.com/dms/image/D4E03AQEiDK6f8zWdzw/profile-displayphoto-shrink_800_800/0/1677633946654?e=1692835200&v=beta&t=cKLys-lBGLhQnlqoKVi3qpkWoKgTsv0x4kLfQoYXA4Y",
+        coverPhoto: "https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        name: "Jason RP"
     }
     return (
         <View style={styles.container}>
@@ -20,7 +19,7 @@ const ProfileCard = () => {
                 </Text>
             </View>
             <View style={styles.buttonContainer}>
-                <Text style={{ color: "blue" }} onPress={() =>  Linking.openURL("https://www.twitter.com")}>
+                <Text style={{ color: "blue" }} onPress={() =>  Linking.openURL("https://www.instagram.com/jasontarz/")}>
                     {tw}
                 </Text>
             </View>
@@ -36,7 +35,9 @@ const styles = StyleSheet.create(
         },
         coverPhoto: {
             width: "100%",
-            height: 200
+            height: 300,
+            borderWidth: 3,
+            borderColor: "black"
         },
         avatarContainer: {
             alignItems: "center",
@@ -46,8 +47,8 @@ const styles = StyleSheet.create(
             width: 150,
             height: 150,
             borderRadius: 75,
-            borderWidth: 5,
-            borderColor: "white"
+            borderWidth: 4,
+            borderColor: "black"
         },
         name: {
             marginTop: 15,
@@ -55,8 +56,8 @@ const styles = StyleSheet.create(
         },
         buttonContainer: {
             flexDirection: "row",
-            marginTop: 20,
-            width: "60%",
+            marginTop: 10,
+            width: "40%",
             justifyContent: "space-between"
         }
     }

@@ -2,6 +2,8 @@ import React from "react";
 import {Image, Linking, StyleSheet, Text, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"
 const tw = <Icon name="instagram" size={30} color="black"/>
+const fb = <Icon name="facebook" size={30} color="black"/>
+const yt = <Icon name="youtube" size={30} color="black"/>
 
 const ProfileCard = () => {
     const user = {
@@ -21,6 +23,12 @@ const ProfileCard = () => {
             <View style={styles.buttonContainer}>
                 <Text style={{ color: "blue" }} onPress={() =>  Linking.openURL("https://www.instagram.com/jasontarz/")}>
                     {tw}
+                </Text>
+                <Text style={{ color: "blue" }} onPress={() =>  Linking.openURL("https://www.facebook.com/")}>
+                    {fb}
+                </Text>
+                <Text style={{ color: "blue" }} onPress={() =>  Linking.openURL("https://www.youtube.com/@JasonTarz/")}>
+                    {yt}
                 </Text>
             </View>
         </View>

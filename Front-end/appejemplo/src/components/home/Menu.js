@@ -1,15 +1,12 @@
 import React from "react";
-
 import {Text, View} from "react-native";
+import ProfileCard from "./ProfileCard";
 
-const Menu = () =>{
+const Menu = () => {
     return (
         <View>
-            <Text>
-                VIVA ESPAÑA VIVA EL REY VIVA EL ORDEN Y LA LEY! OLEEEEEEEEEEEEEEEEEEEEEE..!!! Xd
-            </Text>
+            <ProfileCard />
         </View>
     )
 }
-
-export default Menu;
+export default Menu

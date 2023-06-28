@@ -1,45 +1,50 @@
 import React from "react";
-import {StyleSheet, Linking, View, Image, Text } from "react-native";
+import { Linking, StyleSheet, View, Image, Text, Button } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import Task from "./Task";
 
-const instagram_username = <Icon name="instagram" size={30} color="black"/>
-const portfolio_url = <Icon name="globe" size={30} color="black"/>
+const instagram_username = <Icon name="instagram" size={30} color="black" />
+const portfolio_url = <Icon name="globe" size={30} color="black" />
 
-const Profile = ({task}) => {
+
+const Profile = ({ task, closeProfile }) => {
     return (
-        <View style={styles.item}>
+        <View style={styles.items}>
             <View style={styles.supimage}>
-                <View style={styles.leftside}>
-                    <Image style={styles.image} source={{uri: task.urls.raw}} />
+                <View style={styles.leftSide}>
+                    <Image style={styles.image} source={{ uri: task?.urls?.raw }} />
                 </View>
                 <View style={styles.rightside}>
-                    <Text style={{color: 'blue'}} onPress={() => {
+                    <Text style={{ color: "blue" }} onPress={() => {
                         Linking.openURL(task.user.portfolio_url)
                     }}>
                         {task.user.name}
                     </Text>
-                </View>
-                <View style={styles.redes}>
-                    <Text style={{color: "blue"}} onPress={() => {
-                        Linking.openURL(task.user.social.instagram_username)
-                    }}>
-                        {instagram_username}
-                    </Text>
-                </View>
-                <View style={styles.redes}>
-                    <Text style={{color: "blue"}} onPress={() => {
-                        Linking.openURL(task.user.social.portfolio_url)
-                    }}>
-                        {portfolio_url}
-                    </Text>
+                    <View style={styles.redes}>
+                        <Text style={{ color: "blue" }} onPress={() => {
+                            Linking.openURL(task.user.social.instagram_username)
+                        }}>
+                            {instagram_username}
+                        </Text>
+                        <Text style={{ color: "blue" }} onPress={() => {
+                            Linking.openURL(task.user.portfolio_url)
+                        }}>
+                            {portfolio_url}
+                        </Text>
+                    </View>
                 </View>
             </View>
-            <View style={styles.containerKpi}>
+            <View style={styles.containerkpi}>
                 <View style={styles.kpiR}>
                     <Image style={styles.image2} source={require('../../../assets/Like.png')} />
                 </View>
             </View>
+            {/* <Button title="Cerrar" onPress={closeProfile()} /> */}
+
+            <Text style={{ color: "blue" }} onPress={() => {
+                closeProfile()
+            }}>
+                CERRAR
+            </Text>
         </View>
     )
 }

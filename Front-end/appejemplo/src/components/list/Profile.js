@@ -1,17 +1,17 @@
 import React from "react";
-import { Linking, View } from "react-native";
+import {StyleSheet, Linking, View, Image, Text } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import Task from "./Task";
-import { Icon } from "react-native-vector-icons/Icon";
 
 const instagram_username = <Icon name="instagram" size={30} color="black"/>
+const portfolio_url = <Icon name="globe" size={30} color="black"/>
 
-
-const Profile = () => {
+const Profile = ({task}) => {
     return (
         <View style={styles.item}>
             <View style={styles.supimage}>
                 <View style={styles.leftside}>
-                    <Image style={styles.Image} source={{uri: Task.urls.raw}} />
+                    <Image style={styles.image} source={{uri: task.urls.raw}} />
                 </View>
                 <View style={styles.rightside}>
                     <Text style={{color: 'blue'}} onPress={() => {
@@ -37,7 +37,7 @@ const Profile = () => {
             </View>
             <View style={styles.containerKpi}>
                 <View style={styles.kpiR}>
-                    <Image style={styles.image2} source={require('../../../image.png')} />
+                    <Image style={styles.image2} source={require('../../../assets/Like.png')} />
                 </View>
             </View>
         </View>
@@ -45,7 +45,7 @@ const Profile = () => {
 }
 
 const styles = StyleSheet.create({
-    items: {
+    item: {
         height: "100%",
         width: "100%",
         backgroundColor: "white",
@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
-    }, image: {
+    },
+    image: {
         width: 100,
         height: 100,
         borderRadious: 50
@@ -86,20 +87,18 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     containerKpi: {
-        width: "",
-        display: "",
-        flexDirection: "",
-        justifyContent: ""
+        width: 100,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around"
     },
     kpiR: {
         width: 20
-    },
-    image: {
-        width: 20,
-        height: 20
     },
     image2: {
         width: 20,
         height: 20
     }
 })
+
+export default Profile

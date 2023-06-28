@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Alert, FlatList, Modal, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Alert, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import Profile from "./Profile";
 import Task from "./Task";
+
 const ListComponent = () => {
 
-const [taskItems, setTaskItems] = useState([])
-const[showProfile, setShowprofile] = useState([])
+    const [taskItems, setTaskItems] = useState([])
+    const [showProfile, setShowprofile] = useState(false)
+    const [task, setTask] = useState();
 
     useEffect(() => {
         fetchData()
@@ -21,18 +25,10 @@ const[showProfile, setShowprofile] = useState([])
     }
 
     const Item = ({ task, i }) => {
-        const getProfile = (task) => {
-
-        }
         return (
-            <View>
-                <Text>
-                    {i}
-                </Text>
-                <TouchableOpacity style={styles.peritem} key={i} onPress={() => getProfile(task)}>
-                    <Task task={task}/>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.peritem} key={i} onPress={() => getProfile(task)}>
+                <Task task={task}/>
+            </TouchableOpacity>
         )
     }
 
@@ -40,23 +36,32 @@ const[showProfile, setShowprofile] = useState([])
         setShowprofile(!showProfile)
     }
 
-    return (taskItems && taskItems.length > 0 ?
+    const getProfile = (task) => {
+        setShowprofile(true)
+        setTask(task)
+    }
+
+    return (taskItems &&
         <View style={styles.container}>
             <View style={styles.taskWrapper}>
                 <Text style={styles.sectionTitle}>
                     Se listan perfiles
                 </Text>
                 <View style={styles.items}>
-                    <SafeAreaView>
-                        <FlatList data={taskItems} renderItem={({ item, i }) => (<ItemList task={item} i={i} />)} >
-                        </FlatList>
-                    </SafeAreaView>
+                    <FlatList
+                        data={taskItems}
+                        renderItem={({ item, i }) => <Item task={item} i={i} />}
+                    >
+                    </FlatList>
                 </View>
             </View>
-            <Modal animationType="slide" transparent="true" visible={showProfile}
+            <Modal
+            animationType = "slide"
+            transparent = "true"
+            visible = {showProfile}
                 onRequestClose={() => {
                     Alert.alert("modal has been closed.")
-                    setShowProfile(!showProfile)
+                    setShowprofile(!showProfile)
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
@@ -66,14 +71,10 @@ const[showProfile, setShowprofile] = useState([])
                     </View>
                 </View>
             </Modal>
-        </View> :
-        <View>
-            <Text>
-                No hay datos
-            </Text>
-        </View>
+        </View> 
     )
 }
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#E8EAED",
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center",
-        
+        width: "100%"
     }
 })
 export default ListComponent

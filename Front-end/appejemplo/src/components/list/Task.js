@@ -5,14 +5,15 @@ const Task = ({ task }) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <Image source={{uri: task?.urls?.raw}} style={styles.image}/>
+                <Image source={{uri: task.urls.raw}} style={styles.image}/>
                 <Text style={styles.itemText}>
-                    { task?.alt_description }
+                    { task.alt_description }
                 </Text>
             </View>
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     item: {
         backgroundColor: "#FFF",

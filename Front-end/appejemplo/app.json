@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6383c549-1607-42e4-b3df-9276eb667896"
+      }
+    },
+    "owner": "jasonrivera96"
   }
 }

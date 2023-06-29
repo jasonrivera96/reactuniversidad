@@ -4,7 +4,7 @@ import axios from "axios";
 
 const ChatGPT = () => {
     const [data, setData] = useState([]);
-    const apiKey = "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"
+    const apiKey = "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"
     const apiUrl = "https://api.openai.com/v1/engines/text-davinci-002/completions"
     const [textInput, setTextInput] = useState("");
 
@@ -17,7 +17,7 @@ const ChatGPT = () => {
         }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": 'Bearer ${apiKey}'
+                "Authorization": "Bearer " + apiKey
             }
         });
         const text = response.data.choices[0].text;
@@ -36,13 +36,17 @@ const ChatGPT = () => {
                 style={styles.body}
                 renderItem={({item}) =>(
                     <View style={{flexDirection:"row", padding: 10}}>
-                        <Text>
-
+                        <Text style={{fontWeight: "bold", color: item.type === "user" ? "green" : "red"}}>
+                            {item.type === "user" ? "Ninza" : "Bot"}
+                        </Text>
+                        <Text style={styles.bot}>
+                            {item.text}
                         </Text>
                     </View>
                 )}
             />
             <TextInput
+                style = {styles.input}
                 value = {textInput}
                 onChangeText = {text => setTextInput(text)}
                 placeholder = "Pregúntame algo"
@@ -59,19 +63,51 @@ const ChatGPT = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-    }, title: {
-
-    }, body: {
-
-    }, bot: {
-
-    }, button: {
-
-    }, buttonText: {
-
-    }, input: {
-
-    }
-  })
+      backgroundColor: '#ffffff',
+      paddingHorizontal: 20,
+      paddingTop: 40,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+    },
+    body: {
+      flex: 1,
+      marginBottom: 20,
+    },
+    userText: {
+      backgroundColor: '#f0f0f0',
+      padding: 10,
+      borderRadius: 10,
+      marginBottom: 10,
+    },
+    botText: {
+      backgroundColor: '#e0e0e0',
+      padding: 10,
+      borderRadius: 10,
+      marginBottom: 10,
+    },
+    button: {
+      backgroundColor: '#fca311',
+      padding: 10,
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonText: {
+      color: '#ffffff',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: '#cccccc',
+      padding: 10,
+      borderRadius: 5,
+      marginBottom: 20,
+    },
+  });
+  
 
 export default ChatGPT

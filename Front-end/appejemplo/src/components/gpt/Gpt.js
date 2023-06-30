@@ -4,12 +4,12 @@ import axios from "axios";
 
 const ChatGPT = () => {
     const [data, setData] = useState([]);
-    const apiKey = "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"
+    const apiKey = "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"
     const apiUrl = "https://api.openai.com/v1/engines/text-davinci-002/completions"
     const [textInput, setTextInput] = useState("");
 
     const handleSend = async () => {
-        const prompt = textInput
+        const prompt= "Dime cuántas vocales tiene el siguiente párrafo:\n\n" + textInput
         const response = await axios.post(apiUrl, {
             prompt: prompt,
             max_tokens: 1024,
@@ -21,7 +21,9 @@ const ChatGPT = () => {
             }
         });
         const text = response.data.choices[0].text;
-        setData([...data, {type: "user", "text": textInput}, {type: "bot", "text": text}]);
+        const tokensConsumidos = response.data.usage.total_tokens;
+
+        setData([...data, {type: "user", "text": textInput}, {type: "bot", "text": 'Este texto tiene ' + text + ' vocales.' + ' (' + tokensConsumidos + ' TOKENS CONSUMIDOS)'}]);
         setTextInput("");
     }
 
@@ -37,7 +39,7 @@ const ChatGPT = () => {
                 renderItem={({item}) =>(
                     <View style={{flexDirection:"row", padding: 10}}>
                         <Text style={{fontWeight: "bold", color: item.type === "user" ? "green" : "red"}}>
-                            {item.type === "user" ? "Ninza" : "Bot"}
+                            {item.type === "user" ? "Yo: " : "bot: "}
                         </Text>
                         <Text style={styles.bot}>
                             {item.text}

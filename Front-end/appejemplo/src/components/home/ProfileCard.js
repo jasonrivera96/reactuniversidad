@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome"
 const tw = <Icon name="instagram" size={30} color="black"/>
 const fb = <Icon name="facebook" size={30} color="black"/>
 const yt = <Icon name="youtube" size={30} color="black"/>
+const tt = <Icon name="tiktok" size={30} color="black"/>
 
 const ProfileCard = () => {
     const user = {
@@ -29,6 +30,9 @@ const ProfileCard = () => {
                 </Text>
                 <Text style={{ color: "blue" }} onPress={() =>  Linking.openURL("https://www.youtube.com/@JasonTarz/")}>
                     {yt}
+                </Text>
+                <Text style={{ color: "blue" }} onPress={() =>  Linking.openURL("https://www.tiktok.com/@jasontarz/")}>
+                    {tt}
                 </Text>
             </View>
         </View>

@@ -1,5 +1,8 @@
 {
   "expo": {
+    "packagerOpts": {
+      "port": 9020
+    },
     "name": "appejemplo",
     "slug": "appejemplo",
     "version": "1.0.0",

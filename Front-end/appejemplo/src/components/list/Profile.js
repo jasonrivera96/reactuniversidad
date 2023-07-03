@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         height: "100%",
         width: "100%",
         backgroundColor: "white",
-        borderRadious: "20",
+        borderRadius: "20",
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     image: {
         width: 100,
         height: 100,
-        borderRadious: 50
+        borderRadius: 50
     },
     rightside: {
         flexBasis: "flex",

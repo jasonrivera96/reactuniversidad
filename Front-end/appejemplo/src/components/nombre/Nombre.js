@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Alert, Modal, StatusBar, StyleSheet, TextInput, Button, Text, View } from "react-native";
 
 const NombreComponent = () => {
-    const [nombre, setNombre] = useState([]);
-    const [apellido, setApellido] = useState([]);
+    const [nombre, setNombre] = useState("");
+    const [apellido, setApellido] = useState("");
     const [showProfile, setShowProfile] = useState(false);
 
     const closeProfile = () => {

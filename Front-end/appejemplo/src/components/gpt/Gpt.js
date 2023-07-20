@@ -1,115 +1,127 @@
-import {View, StyleSheet, Text, FlatList, TextInput, TouchableOpacity} from "react-native";
+import { View, StyleSheet, Text, TextInput, Button, Alert, Modal } from "react-native";
 import React, { useState } from "react";
-import axios from "axios";
+import { Configuration, OpenAIApi } from "openai";
+import { CONTADOR_VOCALES, CONVERTIDOR_BINARIO, FACTORIAL } from "./Constantes";
 
-const ChatGPT = () => {
-    const [data, setData] = useState([]);
-    const apiKey = "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"
-    const apiUrl = "https://api.openai.com/v1/engines/text-davinci-002/completions"
+const apiKey = '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';
+
+
+const Gpt = () => {
+
+    const configuration = new Configuration({
+        /* organization: "org-wynEPyJcGvJfZHKQl1lpwVCY", */
+        apiKey: apiKey,
+    });
+    const openai = new OpenAIApi(configuration);
+
+    const [respuestas, setRespuestas] = useState([]);
+    const [tokens, setTokens] = useState([]);
     const [textInput, setTextInput] = useState("");
 
-    const handleSend = async () => {
-        const prompt= "Dime cuántas vocales tiene el siguiente párrafo:\n\n" + textInput
-        const response = await axios.post(apiUrl, {
-            prompt: prompt,
-            max_tokens: 1024,
-            temperature: 0.5,
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + apiKey
-            }
-        });
-        const text = response.data.choices[0].text;
-        const tokensConsumidos = response.data.usage.total_tokens;
 
-        setData([...data, {type: "user", "text": textInput}, {type: "bot", "text": 'Este texto tiene ' + text + ' vocales.' + ' (' + tokensConsumidos + ' TOKENS CONSUMIDOS)'}]);
+    const sendMessageToChatGPT = async () => {
         setTextInput("");
-    }
+        setRespuestas(null);
 
-    return(
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    "role": "system", "content": FACTORIAL
+                },
+                { role: "user", content: `${textInput}` }],
+            temperature: 0.5,
+            max_tokens: 50,
+            stop: [" Human:", " AI:"],
+        });
+
+        console.log(response);
+
+        if (response.data.choices && response.data.choices.length > 0) {
+            const botReply = response.data.choices[0].message.content;
+            setTokens(response.data.usage.completion_tokens);
+            setRespuestas(`${botReply}`);
+            
+        } else {
+            console.log('No se encontró una respuesta válida del bot');
+        }
+    };
+
+    return (
         <View style={styles.container}>
-            <Text style={styles.title}>
-                Integración con ChatGPT
-            </Text>
-            <FlatList
-                data={data}
-                keyExtractor={(item, index) => index.toString()}
-                style={styles.body}
-                renderItem={({item}) =>(
-                    <View style={{flexDirection:"row", padding: 10}}>
-                        <Text style={{fontWeight: "bold", color: item.type === "user" ? "green" : "red"}}>
-                            {item.type === "user" ? "Yo: " : "bot: "}
-                        </Text>
-                        <Text style={styles.bot}>
-                            {item.text}
-                        </Text>
-                    </View>
-                )}
-            />
-            <TextInput
-                style = {styles.input}
-                value = {textInput}
-                onChangeText = {text => setTextInput(text)}
-                placeholder = "Pregúntame algo"
-            />
-            <TouchableOpacity style={styles.button} onPress={handleSend}>
-                <Text style={styles.buttonText}>
-                    Continuar
-                </Text>
-            </TouchableOpacity>
+            <View>
+                <Text style={styles.message}>CHAT OPENAI</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese un texto "
+                        value={textInput}
+                        onChangeText={setTextInput}
+                        onSubmitEditing={sendMessageToChatGPT}
+                    />
+                    <Button title="Enviar" onPress={sendMessageToChatGPT} />
+                </View>
+
+                <View style={styles.respuestasContainer}>
+                    <Text style={styles.respuesta}>{respuestas}</Text>
+                    <Text style={styles.informacion}>Tokens utilizados: {tokens}</Text>
+                </View>
+            </View>
         </View>
-    )
-}
+
+
+
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#ffffff',
-      paddingHorizontal: 20,
-      paddingTop: 40,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 20,
-    },
-    body: {
-      flex: 1,
-      marginBottom: 20,
-    },
-    userText: {
-      backgroundColor: '#f0f0f0',
-      padding: 10,
-      borderRadius: 10,
-      marginBottom: 10,
-    },
-    botText: {
-      backgroundColor: '#e0e0e0',
-      padding: 10,
-      borderRadius: 10,
-      marginBottom: 10,
-    },
-    button: {
-      backgroundColor: '#fca311',
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    buttonText: {
-      color: '#ffffff',
-      fontSize: 18,
-      fontWeight: 'bold',
+    inputContainer: {
+        marginBottom: 20,
     },
     input: {
-      borderWidth: 1,
-      borderColor: '#cccccc',
-      padding: 10,
-      borderRadius: 5,
-      marginBottom: 20,
+        height: 50,
+        width: 400,
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 10,
     },
-  });
-  
+    message: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    informacion: {
+        fontSize: 14,
+        fontWeight: 100,
+        marginLeft: 2
+    },
+    respuestasContainer: {
+        height: 200,
+        width: 400,
+        alignItems: 'left',
+        borderWidth: 1,
+        borderColor: 'gray', 
+        borderRadius: 5, 
+        padding: 10, 
+        marginTop: 10,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+    respuesta: {
+        fontSize: 14,
+        marginBottom: 5,
+    }, centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo oscuro semitransparente
+    },
+});
 
-export default ChatGPT
+export default Gpt

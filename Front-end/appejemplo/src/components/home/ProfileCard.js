@@ -8,7 +8,7 @@ const tt = <Icon name="tiktok" size={30} color="black"/>
 
 const ProfileCard = () => {
     const user = {
-        avatar: "https://media.licdn.com/dms/image/D4E03AQEiDK6f8zWdzw/profile-displayphoto-shrink_800_800/0/1677633946654?e=1692835200&v=beta&t=cKLys-lBGLhQnlqoKVi3qpkWoKgTsv0x4kLfQoYXA4Y",
+        avatar: "https://media.licdn.com/dms/image/D4E03AQEiDK6f8zWdzw/profile-displayphoto-shrink_800_800/0/1677633946654?e=2147483647&v=beta&t=JuELBZWIVKdQQBrs2APRyXcgFTkmNWWGTOUCXro11yI",
         coverPhoto: "https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         name: "Jason RP"
     }

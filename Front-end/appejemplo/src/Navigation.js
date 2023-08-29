@@ -3,9 +3,10 @@ import {Text, View} from "react-native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Menu from "./components/home/Menu";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import ListComponent from "./components/list/List";
+import List from "./components/list/List";
 import NombreComponent from "./components/nombre/Nombre";
 import ChatGPT from "./components/gpt/Gpt";
+import LangChain from "./components/langchain/LangChain";
 
 const Tab = createBottomTabNavigator()
 
@@ -16,7 +17,7 @@ const navigation = () => {
               tabBarLabel: "Home",
           }}>
           </Tab.Screen>
-          <Tab.Screen name="List" component={ListComponent} options={{
+          <Tab.Screen name="List" component={List} options={{
               tabBarLabel: "Listado",
           }}>
           </Tab.Screen>
@@ -26,6 +27,10 @@ const navigation = () => {
           </Tab.Screen>
           <Tab.Screen name="ChatGPT" component={ChatGPT} options={{
               tabBarLabel: "ChatGPT",
+          }}>
+          </Tab.Screen>
+          <Tab.Screen name="LangChain" component={LangChain} options={{
+              tabBarLabel: "LangChain",
           }}>
           </Tab.Screen>
       </Tab.Navigator>

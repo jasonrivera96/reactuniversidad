@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TextInput, Button, Alert, Modal } from "react-native";
+import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Alert, Modal } from "react-native";
 import React, { useState } from "react";
 import { Configuration, OpenAIApi } from "openai";
 import { CONTADOR_VOCALES, CONVERTIDOR_BINARIO, FACTORIAL } from "./Constantes";
@@ -50,16 +50,17 @@ const Gpt = () => {
     return (
         <View style={styles.container}>
             <View>
-                <Text style={styles.message}>CHAT OPENAI</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Ingrese un texto "
+                        placeholder="Ingresa un texto "
                         value={textInput}
                         onChangeText={setTextInput}
                         onSubmitEditing={sendMessageToChatGPT}
                     />
-                    <Button title="Enviar" onPress={sendMessageToChatGPT} />
+                    <TouchableOpacity style={styles.button} onPress={sendMessageToChatGPT}>
+                        <Text style={styles.buttonText}>Enviar</Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.respuestasContainer}>
@@ -68,28 +69,25 @@ const Gpt = () => {
                 </View>
             </View>
         </View>
-
-
-
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     inputContainer: {
-        marginBottom: 20,
+        padding: 66,
+        alignItems: 'center',
     },
     input: {
+        color: 'grey',
         height: 50,
-        width: 400,
+        width: '90%',
         borderWidth: 1,
         borderRadius: 5,
-        paddingHorizontal: 10,
-        marginBottom: 10,
+        marginBottom: 25,
+        paddingHorizontal: 13,
     },
     message: {
         fontSize: 16,
@@ -103,24 +101,34 @@ const styles = StyleSheet.create({
     },
     respuestasContainer: {
         height: 200,
-        width: 400,
-        alignItems: 'left',
-        borderWidth: 1,
+        width: '90%',
+        borderWidth: 0,
         borderColor: 'gray', 
         borderRadius: 5, 
-        padding: 10, 
-        marginTop: 10,
+        padding: 10,
         flexDirection: 'column',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        alignSelf: 'center',
     },
     respuesta: {
         fontSize: 14,
         marginBottom: 5,
-    }, centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo oscuro semitransparente
+    },
+    button: {
+        backgroundColor: 'cadetblue',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        paddingVertical: 10,
+        paddingHorizontal: 70,
+        marginTop: 10,
+        alignSelf: 'center',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 13,
+        fontWeight: 'bold',
     },
 });
 

@@ -1,92 +1,158 @@
-import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Alert, Modal } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, Button } from "react-native";
+//import * as DocumentPicker from "expo-document-picker";
+import { PDFDocument, rgb } from 'pdf-lib';
+//import axios from "axios";
 
 const LangChain = () => {
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [question, setQuestion] = useState("");
+    const [responseText, setResponseText] = useState("");
 
+    const onDrop = (event) => {
+        const files = Array.from(event.target.files);
+        setSelectedFiles(files);
+      };
+
+    const handleQuestionChange = (event) => {
+        setQuestion(event.target.value);
+    };
+
+
+    const uploadFilesToBackend = async () => {
+
+        try {
+            const pdfDoc = await PDFDocument.create();
+      
+            for (const file of selectedFiles) {
+              const existingPdfBytes = await file.arrayBuffer();
+              const newPdf = await PDFDocument.load(existingPdfBytes);
+      
+              const pages = await pdfDoc.copyPages(newPdf, newPdf.getPageIndices());
+              pages.forEach((page) => pdfDoc.addPage(page));
+            }
+      
+            const mergedPdfBytes = await pdfDoc.save();
+            const mergedPdfBlob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+
+            const pdfUrl = URL.createObjectURL(mergedPdfBlob);
+            const formData = new FormData();
+
+            formData.append('pdfFile', mergedPdfBlob);
+            formData.append('question', question);
+      
+            const response = await fetch('http://localhost:8000/upload', {
+                method: 'POST',
+                body: formData,
+            });
+      
+            const data = await response.json();
+            console.log(data);
+            setResponseText(data.message);
+        } catch (error) {
+            console.error('Error al enviar al back:', error);
+        }
+
+        /* const formData = new FormData();
+        formData.append("file", {
+            uri: selectedFiles.uri,
+            name: selectedFiles.name,
+            type: selectedFiles.type,
+        });
     
+        try {
+            const response = await axios.post("http://localhost/8000", formData);
+            console.log("Archivo enviado y procesado:", response.data);
+            // Realiza cualquier acción necesaria con la respuesta del backend
+        } catch (error) {
+            console.error("Error al enviar el archivo:", error);
+        } */
+    };
+    
+    /* const pickDocument = async () => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: "application/pdf",
+            });
+
+            if (result.type === "success") {
+                console.log('asdsdasda')
+                setselectedFiles(result);
+                uploadFilesToBackend(result); // Envía el archivo al backend
+            }
+        } catch (error) {
+            console.error("Error al seleccionar el documento:", error);
+        }
+    }; */
+
+    const containerStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        fontFamily: 'Arial, sans-serif',
+    };
+
+    const headingStyle = {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        marginBottom: '20px',
+    };
+
+    const inputStyle = {
+        border: '1px solid #ccc',
+        padding: '10px',
+        marginBottom: '10px',
+        borderRadius: '5px',
+        width: '100%',
+        maxWidth: '300px',
+    };
+
+    const buttonStyle = {
+        background: '#007bff',
+        color: 'white',
+        border: 'none',
+        padding: '10px 20px',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s',
+    };
+
+    const responseStyle  = {
+        border: '1px solid #ccc',
+        padding: '10px',
+        marginBottom: '10px',
+        borderRadius: '5px',
+        width: '100%',
+        maxWidth: '300px',
+    };
 
     return (
-        <View style={styles.container}>
-            <View>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Ingresa un texto "
-                    />
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Enviar</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.respuestasContainer}>
-                    <Text style={styles.respuesta}></Text>
-                    <Text style={styles.informacion}>Tokens utilizados: </Text>
-                </View>
-            </View>
-        </View>
-
-
-
+        <div style={containerStyle}>
+            <h1 style={headingStyle}>LangChain PDF</h1>
+            <input style={inputStyle} type="file" accept=".pdf" multiple onChange={onDrop} />
+            <br />
+            <input style={inputStyle} type="text" placeholder="Ingrese una pregunta" value={question} onChange={handleQuestionChange} />
+            <br />
+            <button style={buttonStyle} onClick={uploadFilesToBackend}>Procesar</button>
+            <br />
+            {responseText && (
+                <div style={responseStyle}>
+                    <h1>Respuesta del Backend:</h1>
+                    <p>{responseText}</p>
+                </div>
+            )}
+        </div>
+       
+        /* <View style={styles.container}>
+            <Button title="Subir PDF" onPress={pickDocument} />
+            {selectedFiles && (
+                <Text>Archivo seleccionado: {selectedFiles.name}</Text>
+            )}
+        </View> */
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    inputContainer: {
-        padding: 66,
-        alignItems: 'center',
-    },
-    input: {
-        color: 'grey',
-        height: 50,
-        width: '90%',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 25,
-        paddingHorizontal: 13,
-    },
-    message: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    informacion: {
-        fontSize: 14,
-        fontWeight: 100,
-        marginLeft: 2
-    },
-    respuestasContainer: {
-        height: 200,
-        width: '90%',
-        borderWidth: 1,
-        borderColor: 'gray', 
-        borderRadius: 5, 
-        padding: 10,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        alignSelf: 'center',
-    },
-    respuesta: {
-        fontSize: 14,
-        marginBottom: 5,
-    },
-    button: {
-        backgroundColor: 'cadetblue',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        paddingVertical: 10,
-        paddingHorizontal: 70,
-        marginTop: 10,
-        alignSelf: 'center',
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 13,
-        fontWeight: 'bold',
-    },
-});
 
-export default LangChain
+export default LangChain;
